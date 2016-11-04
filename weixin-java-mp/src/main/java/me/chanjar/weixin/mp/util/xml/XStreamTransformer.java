@@ -1,16 +1,25 @@
 package me.chanjar.weixin.mp.util.xml;
 
-import com.thoughtworks.xstream.XStream;
-import me.chanjar.weixin.common.util.xml.XStreamInitializer;
-import me.chanjar.weixin.mp.bean.*;
-
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.thoughtworks.xstream.XStream;
+
+import me.chanjar.weixin.common.util.xml.XStreamInitializer;
+import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
+import me.chanjar.weixin.mp.bean.message.WxMpXmlOutImageMessage;
+import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
+import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMusicMessage;
+import me.chanjar.weixin.mp.bean.message.WxMpXmlOutNewsMessage;
+import me.chanjar.weixin.mp.bean.message.WxMpXmlOutTextMessage;
+import me.chanjar.weixin.mp.bean.message.WxMpXmlOutTransferKefuMessage;
+import me.chanjar.weixin.mp.bean.message.WxMpXmlOutVideoMessage;
+import me.chanjar.weixin.mp.bean.message.WxMpXmlOutVoiceMessage;
+
 public class XStreamTransformer {
 
-  protected static final Map<Class, XStream> CLASS_2_XSTREAM_INSTANCE = configXStreamInstance();
+  protected static final Map<Class<?>, XStream> CLASS_2_XSTREAM_INSTANCE = configXStreamInstance();
 
   /**
    * xml -> pojo
@@ -32,7 +41,7 @@ public class XStreamTransformer {
    * @param clz 类型
    * @param xStream xml解析器
    */
-  public static void register(Class clz,XStream xStream){
+  public static void register(Class<?> clz, XStream xStream) {
     CLASS_2_XSTREAM_INSTANCE.put(clz,xStream);
   }
 
@@ -44,8 +53,8 @@ public class XStreamTransformer {
     return CLASS_2_XSTREAM_INSTANCE.get(clazz).toXML(object);
   }
 
-  private static Map<Class, XStream> configXStreamInstance() {
-    Map<Class, XStream> map = new HashMap<Class, XStream>();
+  private static Map<Class<?>, XStream> configXStreamInstance() {
+    Map<Class<?>, XStream> map = new HashMap<>();
     map.put(WxMpXmlMessage.class, config_WxMpXmlMessage());
     map.put(WxMpXmlOutMusicMessage.class, config_WxMpXmlOutMusicMessage());
     map.put(WxMpXmlOutNewsMessage.class, config_WxMpXmlOutNewsMessage());
@@ -53,7 +62,7 @@ public class XStreamTransformer {
     map.put(WxMpXmlOutImageMessage.class, config_WxMpXmlOutImageMessage());
     map.put(WxMpXmlOutVideoMessage.class, config_WxMpXmlOutVideoMessage());
     map.put(WxMpXmlOutVoiceMessage.class, config_WxMpXmlOutVoiceMessage());
-    map.put(WxMpXmlOutTransferCustomerServiceMessage.class, config_WxMpXmlOutTransferCustomerServiceMessage());
+    map.put(WxMpXmlOutTransferKefuMessage.class, config_WxMpXmlOutTransferCustomerServiceMessage());
 
     return map;
   }
@@ -118,8 +127,8 @@ public class XStreamTransformer {
   private static XStream config_WxMpXmlOutTransferCustomerServiceMessage() {
     XStream xstream = XStreamInitializer.getInstance();
     xstream.processAnnotations(WxMpXmlOutMessage.class);
-    xstream.processAnnotations(WxMpXmlOutTransferCustomerServiceMessage.class);
-    xstream.processAnnotations(WxMpXmlOutTransferCustomerServiceMessage.TransInfo.class);
+    xstream.processAnnotations(WxMpXmlOutTransferKefuMessage.class);
+    xstream.processAnnotations(WxMpXmlOutTransferKefuMessage.TransInfo.class);
     return xstream;
   }
 
